@@ -40,3 +40,10 @@ via /etc/resolv.conf file
 - Client to server connection using ssh
 
 ![ssh client to server](/machines/pics/ssh%20client.PNG)
+
+
+### Persistent Network Configuration
+
+- Using /etc/netplan/01-network-manager-all.yaml file
+
+![client yaml file](/machines/pics/client-yaml-file.PNG)

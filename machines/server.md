@@ -36,3 +36,10 @@ sudo systemctl status ssh
 ```
 
 ![server ssh status](/machines/pics/ssh-server.PNG)
+
+
+### Persistent Network Configuration
+
+- Using /etc/netplan/01-network-manager-all.yaml file
+
+![client yaml file](/machines/pics/server-yaml-file.PNG)

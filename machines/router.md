@@ -35,6 +35,7 @@ sudo sysctl -p
 ![enable ip forwarding](/machines/pics/enable%20ip%20forwarding.PNG)
 
 ### NAT + Interface Forwarding
+
 ```bash
 # -t nat target NAT
 # -o enp0s3 specifies the outbound interface
@@ -44,4 +45,24 @@ sudo iptables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE
 sudo iptables -A FORWARD -i enp0s8 -o enp0s3 -j ACCEPT
 # Allows inbound traffic
 sudo iptables -A FORWARD -i enp0s3 -o enp0s8 -m state --state ESTABLISHED,RELATED -j ACCEPT
+```
+
+## Persistent Network Configuration
+
+Static IPs were configured using Netplan to ensure consistency
+across reboots.
+
+- Router LAN: 10.0.0.1/24
+- Client: 10.0.0.10/24
+- Server: 10.0.0.20/24
+- Default gateway: 10.0.0.1
+
+NAT and IP forwarding were made persistent using sysctl and
+iptables-persistent.
+
+![router yaml file](/machines/pics/router-netplan-yaml-file.PNG)
+
+```bash
+sudo netplay try
+sudo netplay apply
 ```
