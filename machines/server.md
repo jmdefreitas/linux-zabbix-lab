@@ -1,4 +1,4 @@
-# Router VM
+# Server VM
 
 ## Purpose
 Acts as server for outbound devices to communicate with internal server. 
@@ -13,15 +13,26 @@ Acts as server for outbound devices to communicate with internal server.
 ### IP Address
 - NAT interface: enp0s3
 - IP: 10.0.0.20/24
+- Default Gateway: 10.0.0.1
 
-![ip a command client machine](/machines/pics/server-ip-a.PNG)
+```bash
+sudo ip addr add 10.0.0.20/24 dev enp0s3
+sudo ip route add default via 10.0.0.1
+```
+
+![server ip a ip route command](/machines/pics/server.PNG)
 
 ### DNS
 via /etc/resolv.conf file
 
 ![cat /etc/resolv.conf](/machines/pics/server-cat-resolf.PNG)
 
-### Internet
-Uses default gateway (10.0.0.1) for internet access
+### SSH
+- After Internet connection and DNS server is established I can install openssh-server.
 
-![ip route client](/machines/pics/server-ip-route.PNG)
+```bash
+sudo apt install openssh-server -y
+sudo systemctl status ssh
+```
+
+![server ssh status](/machines/pics/ssh-server.PNG)

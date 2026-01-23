@@ -10,13 +10,12 @@ Build a virtual Linux lab to practice networking fundamentals:
 ## Environment
 - Host RAM: 12 GB
 - Hypervisor: VirtualBox
-- OS: Ubuntu Server 22.04
 - OS: Lubuntu 24.04.3
 
 ## Topology
 - Router VM (NAT + Internal)
-- Server VM (Internal)
-- Client VM (Internal)
+- Server VM (Internal) lab_net
+- Client VM (Internal) lab_net
 
 ## Current Status
 ✔ Routing configured  

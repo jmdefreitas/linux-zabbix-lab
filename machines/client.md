@@ -1,4 +1,4 @@
-# Router VM
+# Client VM
 
 ## Purpose
 Acts as private client devices inside a LAN. 
@@ -13,15 +13,30 @@ Acts as private client devices inside a LAN.
 ### IP Address
 - NAT interface: enp0s3
 - IP: 10.0.0.10/24
+- Default Gateway: 10.0.0.1
 
-![ip a command client machine](/machines/pics/client-ip-a.PNG)
+```bash
+sudo ip addr add 10.0.0.10/24 dev enp0s3
+sudo ip route add default via 10.0.0.1
+```
+
+![ip a command client machine](/machines/pics/client.PNG)
+
+### Testing Internet Access
+- PING uses default gateway to reach the Router and then reaches the internet
+
+```bash
+ping -c 4 8.8.8.8
+```
+
+![ping command](/machines/pics/client%20ping.PNG)
 
 ### DNS
 via /etc/resolv.conf file
 
 ![cat /etc/resolv.conf](/machines/pics/client-cat-resolve.PNG)
 
-### Internet
-Uses default gateway (10.0.0.1) for internet access
+### SSH
+- Client to server connection using ssh
 
-![ip route client](/machines/pics/client-ip-route.PNG)
+![ssh client to server](/machines/pics/ssh%20client.PNG)

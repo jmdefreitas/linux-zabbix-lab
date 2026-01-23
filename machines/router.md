@@ -12,11 +12,11 @@ Acts as a gateway between the internal lab network and the internet.
 
 ## Configuration
 ### IP Address
-- Interface: enp0s9
-- IP: 10.0.0.1/24
-
 - NAT interface: enp0s3
 - IP: 10.0.2.15/24
+
+- Interface: enp0s9
+- IP: 10.0.0.1/24
 
 ![ip a command router](/machines/pics/router-ip-a.PNG)
 
@@ -25,5 +25,23 @@ Enabled via /etc/sysctl.conf
 
 ![sysctl.conf router](/machines/pics/router-cat-sysctl.PNG)
 
-### NAT
-iptables masquerade rule applied on NAT interface
+### Enable IP Forwarding
+```bash
+sudo nano /etc/sysctl.conf
+# Uncomment net.ipv4.ip_forward=1
+sudo sysctl -p
+```
+
+![enable ip forwarding](/machines/pics/enable%20ip%20forwarding.PNG)
+
+### NAT + Interface Forwarding
+```bash
+# -t nat target NAT
+# -o enp0s3 specifies the outbound interface
+# -j MASQUERADE hides the private IP addresses
+sudo iptables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE
+# Allows outbound traffic
+sudo iptables -A FORWARD -i enp0s8 -o enp0s3 -j ACCEPT
+# Allows inbound traffic
+sudo iptables -A FORWARD -i enp0s3 -o enp0s8 -m state --state ESTABLISHED,RELATED -j ACCEPT
+```
