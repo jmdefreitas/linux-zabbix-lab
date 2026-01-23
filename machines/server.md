@@ -43,3 +43,22 @@ sudo systemctl status ssh
 - Using /etc/netplan/01-network-manager-all.yaml file
 
 ![client yaml file](/machines/pics/server-yaml-file.PNG)
+
+
+## Secure Remote Administration (SSH)
+
+Implemented key-based SSH authentication for server administration.
+
+Security measures:
+- Disabled root SSH login
+- Disabled password authentication
+- Restricted SSH access to LAN interface
+- Limited SSH access to admin user only
+
+Verification:
+- Client connects without password prompt
+- SSH service listens only on 10.0.0.20
+- Configuration persists after reboot
+
+![server ssh config](/machines/pics/server-ssh-config.PNG)
+![client to server ssh](/machines/pics/client-to-server-ssh.PNG)
