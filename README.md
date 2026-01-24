@@ -29,8 +29,8 @@ Build a virtual Linux lab to practice networking fundamentals:
 Subnet: 10.0.0.0/24
 Gateway: 10.0.0.1
 
-Client (10.0.0.10) -> Router (10.0.0.1) -> NAT -> Internet
-Server (10.0.0.20) ->
+Client (10.0.0.10)| -> Router (10.0.0.1) -> NAT -> Internet
+Server (10.0.0.20)| 
 
 ## Current Status
 ✔ Routing configured  
