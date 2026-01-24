@@ -74,3 +74,20 @@ iptables-persistent.
 sudo netplay try
 sudo netplay apply
 ```
+
+### Roter Firewall
+- Set a Default-Deny forward policy
+
+```bash
+sudo iptables -P FORWARD DROP
+```
+
+- Allow established and related connection (STATEFUL)
+```bash
+# -A FORWARD → append rule to FORWARD chain
+# -m conntrack → enable connection tracking
+# ESTABLISHED → packets that belong to an existing connection
+# RELATED → helper traffic (FTP, ICMP errors, etc.)
+# -j ACCEPT → allow it
+sudo iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+```

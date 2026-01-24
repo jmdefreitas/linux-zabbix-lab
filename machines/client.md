@@ -48,8 +48,17 @@ via /etc/resolv.conf file
 
 ![client yaml file](/machines/pics/client-yaml-file.PNG)
 
-### Firewall
+### Firewall AND server access
 
 - trying to ssh into the server using the wrong port from client
 
 ![ssh into wrong port](/machines/pics/client-ssh-wrong-port.PNG)
+
+- trying to access nginx server on the server VM. Connection reject due to server firewall
+- After change server firewall rules, connection allowed
+![blocked connection to website](/machines/pics/failed-connection-to-website.PNG)
+
+### DNS local file
+- Assigning a local domain name for http://10.0.0.20 using /etc/hosts
+![domain name for server](/machines/pics/myserver-local.PNG)
+

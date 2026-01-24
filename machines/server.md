@@ -66,7 +66,7 @@ Verification:
 
 
 ### Firewall
-- Device Hardening (Only allow services that are used)
+- Device Hardening (Only allow services that are used) using ufw command (iptables are more complicated)
 
 * Reset & enable logging
 ```bash
@@ -91,3 +91,14 @@ sudo ufw status verbose
 
 * Blocking attempts to log into a different port (111, 222, 333 as examples)
 ![blocked ssh attempts into wrong ports](/machines/pics/server-ssh-logs.PNG)
+
+### Creating a webserver with NGINX
+
+- install and enable nginx
+- create simple webpage on /var/www/html/index.html
+![nginx stats](/machines/pics/server-nginx.PNG)
+![website](/machines/pics/simple%20web%20server.PNG)
+- allow connection to port 80
+```bash
+sudo ufw allow 80/tcp
+```
