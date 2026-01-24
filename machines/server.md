@@ -102,3 +102,18 @@ sudo ufw status verbose
 ```bash
 sudo ufw allow 80/tcp
 ```
+
+### Dynamic IP addresses with isc-dhcp-server
+- Changing network manager yaml file to use dhcp4 server
+![new network manager yaml file](/machines/pics/server-network-dhcp.PNG)
+
+- Flushing Static IP address, deleting default route and requesting a new ip address from the router.
+- Server is using a IP reservation (10.0.0.20)
+```bash
+sudo ip addr flush dev enp0s3
+sudo ip route del default
+sudo netplan apply
+```
+
+![server new ip address](/machines/pics/server%20new%20ip%20address.PNG)
+

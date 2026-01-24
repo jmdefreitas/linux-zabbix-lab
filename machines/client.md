@@ -62,3 +62,18 @@ via /etc/resolv.conf file
 - Assigning a local domain name for http://10.0.0.20 using /etc/hosts
 ![domain name for server](/machines/pics/myserver-local.PNG)
 
+### Dynamic IP addresses with isc-dhcp-server
+- Changing network manager yaml file to use dhcp4 server
+![new network manager yaml file](/machines/pics/client%20new%20network%20yaml%20file.PNG)
+
+- Flushing Static IP address, deleting default route and requesting a new ip address from the router.
+- Client can still reach server nginx due to ip reservation to the server
+
+```bash
+sudo ip addr flush dev enp0s3
+sudo ip route del default
+sudo netplan apply
+```
+
+- Static ip to client was 10.0.0.10 now is 10.0.0.41
+![server new ip address](/machines/pics/client%20new%20ip%20address.PNG)

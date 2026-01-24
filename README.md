@@ -29,6 +29,7 @@ Build a virtual Linux lab to practice networking fundamentals:
 Subnet: 10.0.0.0/24
 Gateway: 10.0.0.1
 
+#Todo: fix this
 Client (10.0.0.10)| -> Router (10.0.0.1) -> NAT -> Internet
 Server (10.0.0.20)| 
 
@@ -41,9 +42,6 @@ Server (10.0.0.20)|
 
 Allowed:
     - Client -> Server : SSH 22
-
-
-
 
 Track 2: Firewalling & Network Control (CORE NETWORKING)
 Track 3: Turn Server Into a Real Server

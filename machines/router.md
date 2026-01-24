@@ -91,3 +91,20 @@ sudo iptables -P FORWARD DROP
 # -j ACCEPT → allow it
 sudo iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 ```
+
+### Dynamic IP addresses with isc-dhcp-server
+- Configuring dhcp server:
+  ip address range
+  default gateway
+  subnet mask
+  nameserver
+  ip address reservation for the server vm
+
+![dhcp server config file](/machines/pics/dhcpd.conf%20configuration.PNG)
+
+- Checking router dhcp server log 
+```bash
+sudo journalctl -u isc-dhcp-server -f
+```
+
+![router's dhcp server log](/machines/pics/router%20dhcp%20log.PNG)
