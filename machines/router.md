@@ -47,6 +47,12 @@ sudo iptables -A FORWARD -i enp0s8 -o enp0s3 -j ACCEPT
 sudo iptables -A FORWARD -i enp0s3 -o enp0s8 -m state --state ESTABLISHED,RELATED -j ACCEPT
 ```
 
+Breaking NAT with 
+```bash 
+iptables -t nat -F
+```
+stops internet connection to both the server and client.
+
 ## Persistent Network Configuration
 
 Static IPs were configured using Netplan to ensure consistency
@@ -61,6 +67,8 @@ NAT and IP forwarding were made persistent using sysctl and
 iptables-persistent.
 
 ![router yaml file](/machines/pics/router-netplan-yaml-file.PNG)
+
+- test and apply changes
 
 ```bash
 sudo netplay try

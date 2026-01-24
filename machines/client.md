@@ -47,3 +47,9 @@ via /etc/resolv.conf file
 - Using /etc/netplan/01-network-manager-all.yaml file
 
 ![client yaml file](/machines/pics/client-yaml-file.PNG)
+
+### Firewall
+
+- trying to ssh into the server using the wrong port from client
+
+![ssh into wrong port](/machines/pics/client-ssh-wrong-port.PNG)

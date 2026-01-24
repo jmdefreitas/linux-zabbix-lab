@@ -62,3 +62,32 @@ Verification:
 
 ![server ssh config](/machines/pics/server-ssh-config.PNG)
 ![client to server ssh](/machines/pics/client-to-server-ssh.PNG)
+
+
+
+### Firewall
+- Device Hardening (Only allow services that are used)
+
+* Reset & enable logging
+```bash
+sudo ufw reset
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw logging on
+```
+
+* Allow only ssh on port 22
+```bash
+sudo ufw allow from 10.0.0.10 to any port 22 proto cp
+```
+
+* Enable and verify
+```bash
+sudo ufw enable
+sudo ufw status verbose
+```
+
+![server ufw status verbose](/machines/pics/server-ufw-status-verbose.PNG)
+
+* Blocking attempts to log into a different port (111, 222, 333 as examples)
+![blocked ssh attempts into wrong ports](/machines/pics/server-ssh-logs.PNG)
