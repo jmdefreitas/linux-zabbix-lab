@@ -1,7 +1,8 @@
 # Router VM
 
 ## Purpose
-Acts as a gateway between the internal lab network and the internet.
+- Acts as a gateway between the internal lab network and the internet.7
+- Acts as gate between outside devices and server
 
 ## Resources
 - RAM: 2 GB
@@ -108,3 +109,21 @@ sudo journalctl -u isc-dhcp-server -f
 ```
 
 ![router's dhcp server log](/machines/pics/router%20dhcp%20log.PNG)
+
+
+### Exposing the server 
+- Outside devices should not have access to internal server using 10.0.0.2
+- Outside devices should communicate with router wan interface and router forwards those requests to its internal interface reaching the server
+
+Allow nat on internal interface
+Add port forwading DNAT
+Add stateful firewall forwading 
+
+```bash
+sudo iptables -t nat -A POSTROUTING -o enp0s8 -j MASQUERADE
+sudo iptables -t nat -A PREROUTING -i enp0s3 -p tcp --dport 80 -j DNAT --to-destination 10.0.0.20:80
+sudo iptables -A FORWARD -p tcp -d 10.0.0.20 --dport 80 -j ACCEPT
+sudo iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+```
+
+![router ip table](/machines/pics/router%20iptables.PNG)

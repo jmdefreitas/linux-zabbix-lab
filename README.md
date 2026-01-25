@@ -17,14 +17,16 @@ Build a virtual Linux lab to practice networking fundamentals:
 - Server VM (Internal) lab_net
 - Client VM (Internal) lab_net
 
-# IP Addressing Scheme (static)
+# IP Addressing Scheme 
+* dhcp server running on router vm
 
-| Machine | Interface | IP Address |
-|---------|-----------|------------|
-| Router  | enp0s3    | 10.0.2.15  |
-| Router  | enp0s8    | 10.0.0.1   |
-| Server  | enp0s3    | 10.0.0.20  |
-| Client  | enp0s3    | 10.0.0.10  |
+| Machine     | Interface | IP Address |
+|---------    |-----------|------------|
+| Router      | enp0s3    | 10.0.2.3   |
+| Router      | enp0s8    | 10.0.0.1   |
+| Server      | enp0s3    | 10.0.0.20  | * reserved
+| Client      | enp0s3    | DHCPv4     |
+| Outside VM  | enp0s3    | 10.0.2.15  |
 
 Subnet: 10.0.0.0/24
 Gateway: 10.0.0.1
@@ -37,13 +39,3 @@ Server (10.0.0.20)|
 ✔ Routing configured  
 ✔ NAT working  
 ✔ Internal communication verified
-
-## Firewall Security
-
-Allowed:
-    - Client -> Server : SSH 22
-
-Track 2: Firewalling & Network Control (CORE NETWORKING)
-Track 3: Turn Server Into a Real Server
-Track 4: Break & Fix 
-Track 5: Monitoring & Visibility
