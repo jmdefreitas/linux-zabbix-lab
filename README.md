@@ -40,16 +40,3 @@ Server (10.0.0.20)|
 ✔ NAT working  
 ✔ Internal communication verified
 
-                   Internet (simulated)
-                          |
-                    [ Firewall / Router ]
-                    (pfSense or VyOS)
-                     /               \
-                 DMZ Network        Internal Network
-              192.168.10.0/24     192.168.20.0/24
-                |        |            |        |
-           Web Server  DNS       Zabbix      Linux Clients
-           (Nginx)   (Bind)      Server      (2–3 VMs)
-                                      |
-                                Database Server
-                                  (MySQL)
