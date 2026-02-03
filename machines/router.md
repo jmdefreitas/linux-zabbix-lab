@@ -1,133 +1,101 @@
 # Router VM
 
-dhcp configuration file - /etc/dhcp/dhcp.conf
-dhcp enp0s8 ip statically assigned - /etc/netplan/01
-tell dhcp server to listen on enp0s8 interface - /etc/default/isc-dhcp-server
-
 ## Purpose
-- Acts as a gateway between the internal lab network and the internet.7
-- Acts as gate between outside devices and server
+- Acts as a gateway between the internal network and the internet.
 
 ## Resources
 - RAM: 2 GB
 - CPU: 1 vCPU
 - Network Adapters:
   - Adapter 1: NAT
-  - Adapter 2: Internal Network (lab_net)
+  - Adapter 2: Internal Network (intnet-client)
+  - Adapter 3: Internal Network (intnet-server)
+  - Adapter 4: Internal Network (intnet-zabbix)
 
 ## Configuration
 ### IP Address
 - NAT interface: enp0s3
 - IP: 10.0.2.15/24
 
-- Interface: enp0s9
-- IP: 10.0.0.1/24
+- Client Interface: enp0s8
+- IP: 192.168.1.1/24
 
-![ip a command router](/machines/pics/router-ip-a.PNG)
+- Server Interface: enp0s9
+- IP: 192.168.2.1/24
 
-### IP Forwarding
-Enabled via /etc/sysctl.conf
+- Zabbix Interface: enp0s10
+- IP: 192.168.3.1/24
 
-![sysctl.conf router](/machines/pics/router-cat-sysctl.PNG)
+![ip addresses](/machines/new-pics/ip%20addresses%20router-vm.PNG)
 
-### Enable IP Forwarding
+## Routing
+
+### 1: Network Configuration
+
+Static IPs were configured using Netplan utility to ensure consistency
+across reboots.
+
+![netplan.yaml file](/machines/new-pics/netplan-yaml%20file.PNG)
+
+```bash
+# test and apply changes
+sudo netplay apply
+```
+
+### 2: Dynamic IP addresses with isc-dhcp-server
+- DHCP configuration for all subnets on dhcpd.conf file.
+
+![dhcpd.conf](/machines/new-pics/dhcpd.conf%20file.PNG)
+
+```bash
+# Checking dhcp server log 
+sudo journalctl -u isc-dhcp-server -f
+```
+
+### 3: Enable IP Forwarding
 ```bash
 sudo nano /etc/sysctl.conf
 # Uncomment net.ipv4.ip_forward=1
 sudo sysctl -p
 ```
 
-![enable ip forwarding](/machines/pics/enable%20ip%20forwarding.PNG)
+### 4: Firewall & NAT reset
 
-### NAT + Interface Forwarding
+```bash
+sudo iptables -F 
+sudo iptables -t nat -F 
+sudo iptables -X 
+sudo iptables -P INPUT DROP 
+sudo iptables -P FORWARD DROP 
+sudo iptables -P OUTPUT ACCEPT 
+sudo iptables -A INPUT -i lo -j ACCEPT
+sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+```
+
+- This "resets" the iptables and configures it with a default-deny policy for inbound and forwarded traffic while allowing all outbound traffic;
+
+```bash
+# Allow ICMP (ping) to the router from LANs (optional but helpful)
+sudo iptables -A INPUT -i enp0s8 -p icmp -j ACCEPT
+sudo iptables -A INPUT -i enp0s9 -p icmp -j ACCEPT
+sudo iptables -A INPUT -i enp0s10 -p icmp -j ACCEPT
+```
+
+### 5: NAT + Interface Forwarding
 
 ```bash
 # -t nat target NAT
 # -o enp0s3 specifies the outbound interface
 # -j MASQUERADE hides the private IP addresses
 sudo iptables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE
-# Allows outbound traffic
-sudo iptables -A FORWARD -i enp0s8 -o enp0s3 -j ACCEPT
-# Allows inbound traffic
-sudo iptables -A FORWARD -i enp0s3 -o enp0s8 -m state --state ESTABLISHED,RELATED -j ACCEPT
-```
 
-Breaking NAT with 
-```bash 
-iptables -t nat -F
-```
-stops internet connection to both the server and client.
-
-## Persistent Network Configuration
-
-Static IPs were configured using Netplan to ensure consistency
-across reboots.
-
-- Router LAN: 10.0.0.1/24
-- Client: 10.0.0.10/24
-- Server: 10.0.0.20/24
-- Default gateway: 10.0.0.1
-
-NAT and IP forwarding were made persistent using sysctl and
-iptables-persistent.
-
-![router yaml file](/machines/pics/router-netplan-yaml-file.PNG)
-
-- test and apply changes
-
-```bash
-sudo netplay try
-sudo netplay apply
-```
-
-### Roter Firewall
-- Set a Default-Deny forward policy
-
-```bash
-sudo iptables -P FORWARD DROP
-```
-
-- Allow established and related connection (STATEFUL)
-```bash
-# -A FORWARD → append rule to FORWARD chain
-# -m conntrack → enable connection tracking
-# ESTABLISHED → packets that belong to an existing connection
-# RELATED → helper traffic (FTP, ICMP errors, etc.)
-# -j ACCEPT → allow it
+# Allow established and related forwarded traffic
 sudo iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+# Allow LANs to reach the Internet (tighten later if you want)
+sudo iptables -A FORWARD -i enp0s8 -o enp0s3 -s 192.168.1.0/24 -j ACCEPT
+sudo iptables -A FORWARD -i enp0s9 -o enp0s3 -s 192.168.2.0/24 -j ACCEPT
+sudo iptables -A FORWARD -i enp0s10 -o enp0s3 -s 192.168.3.0/24 -j ACCEPT
 ```
 
-### Dynamic IP addresses with isc-dhcp-server
-- Configuring dhcp server:
-  ip address range
-  default gateway
-  subnet mask
-  nameserver
-  ip address reservation for the server vm
-
-![dhcp server config file](/machines/pics/dhcpd.conf%20configuration.PNG)
-
-- Checking router dhcp server log 
-```bash
-sudo journalctl -u isc-dhcp-server -f
-```
-
-![router's dhcp server log](/machines/pics/router%20dhcp%20log.PNG)
-
-
-### Exposing the server 
-- Outside devices should not have access to internal server using 10.0.0.2
-- Outside devices should communicate with router wan interface and router forwards those requests to its internal interface reaching the server
-
-Allow nat on internal interface
-Add port forwading DNAT
-Add stateful firewall forwading 
-
-```bash
-sudo iptables -t nat -A POSTROUTING -o enp0s8 -j MASQUERADE
-sudo iptables -t nat -A PREROUTING -i enp0s3 -p tcp --dport 80 -j DNAT --to-destination 10.0.0.20:80
-sudo iptables -A FORWARD -p tcp -d 10.0.0.20 --dport 80 -j ACCEPT
-sudo iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
-```
-
-![router ip table](/machines/pics/router%20iptables.PNG)
+![router iptables](/machines/new-pics/router%20iptables.PNG)

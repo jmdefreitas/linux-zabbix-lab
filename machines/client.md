@@ -12,12 +12,12 @@ Acts as private client devices inside a LAN.
 ## Configuration
 ### IP Address
 - NAT interface: enp0s3
-- IP: 10.0.0.10/24
-- Default Gateway: 10.0.0.1
+- IP: 192.168.1.10/24
+- Default Gateway: 192.168.1.1
 
 ```bash
-sudo ip addr add 10.0.0.10/24 dev enp0s3
-sudo ip route add default via 10.0.0.1
+sudo ip addr add 192.168.1.10/24 dev enp0s3
+sudo ip route add default via 192.168.1.1
 ```
 
 ![ip a command client machine](/machines/pics/client.PNG)
@@ -75,5 +75,5 @@ sudo ip route del default
 sudo netplan apply
 ```
 
-- Static ip to client was 10.0.0.10 now is 10.0.0.41
+- Static ip to client was 192.168.1.10 now is 10.0.0.41
 ![server new ip address](/machines/pics/client%20new%20ip%20address.PNG)
