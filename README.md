@@ -1,44 +1,32 @@
 # Linux Networking Lab
 
-![lab topology](/machines/pics/lab-topology.drawio.png)
-
 ## Goal
-Build a virtual Linux lab to practice networking fundamentals:
+Build a virtual Linux lab to practice networking fundamentals, monitoring and basic troubleshooting:
 - Routing
 - NAT
 - Internal networks
 - Linux services
+- Zabbix
 
-## Environment
-- Host RAM: 12 GB
-- Hypervisor: VirtualBox
-- OS: Lubuntu 24.04.3
+## Lab Topology
+
+![lab topology](/machines/pics/lab-topology.drawio.png)
 
 ## Topology
-- Router VM (NAT + Internal)
+- Router VM (NAT + DHCP + Internal)
 - Server VM (Internal) lab_net
 - Client VM (Internal) lab_net
 
 # IP Addressing Scheme 
-* dhcp server running on router vm
 
-| Machine     | Interface | IP Address |
-|---------    |-----------|------------|
-| Router      | enp0s3    | 10.0.2.3   |
-| Router      | enp0s8    | 10.0.0.1   |
-| Server      | enp0s3    | 10.0.0.20  | * reserved
-| Client      | enp0s3    | DHCPv4     |
-| Outside VM  | enp0s3    | 10.0.2.15  |
+| Machine       | Interface | IP Address   |
+|---------------|-----------|--------------|
+| Router        | enp0s3    | 10.0.2.15    |
+| Router        | enp0s8    | 192.168.1.1  |
+| Client        | enp0s8    | 192.168.1.10 |
+| Web Server    | enp0s8    | 192.168.1.20 |
+| Zabbix Server | enp0s8    | 192.168.1.30 |
 
-Subnet: 10.0.0.0/24
-Gateway: 10.0.0.1
 
-#Todo: fix this
-Client (10.0.0.10)| -> Router (10.0.0.1) -> NAT -> Internet
-Server (10.0.0.20)| 
-
-## Current Status
-✔ Routing configured  
-✔ NAT working  
-✔ Internal communication verified
-
+Subnet: 192.168.1.0/24
+Gateway: 192.168.1.1
