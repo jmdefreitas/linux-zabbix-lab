@@ -1,5 +1,7 @@
 # Linux Networking Lab
 
+![lab topology](/machines/pics/lab-topology.drawio.png)
+
 ## Goal
 Build a virtual Linux lab to practice networking fundamentals:
 - Routing

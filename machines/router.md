@@ -1,5 +1,9 @@
 # Router VM
 
+dhcp configuration file - /etc/dhcp/dhcp.conf
+dhcp enp0s8 ip statically assigned - /etc/netplan/01
+tell dhcp server to listen on enp0s8 interface - /etc/default/isc-dhcp-server
+
 ## Purpose
 - Acts as a gateway between the internal lab network and the internet.7
 - Acts as gate between outside devices and server
