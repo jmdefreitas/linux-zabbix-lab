@@ -4,9 +4,9 @@
 - Acts as a gateway between the internal network and the internet.
 
 ## Resources
-- RAM: 2 GB
-- CPU: 1 vCPU
-- Network Adapters:
+RAM: 2 GB
+CPU: 1 vCPU
+Network Adapters:
   - Adapter 1: NAT
   - Adapter 2: Internal Network (intnet-client)
   - Adapter 3: Internal Network (intnet-server)
@@ -96,6 +96,8 @@ sudo iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 sudo iptables -A FORWARD -i enp0s8 -o enp0s3 -s 192.168.1.0/24 -j ACCEPT
 sudo iptables -A FORWARD -i enp0s9 -o enp0s3 -s 192.168.2.0/24 -j ACCEPT
 sudo iptables -A FORWARD -i enp0s10 -o enp0s3 -s 192.168.3.0/24 -j ACCEPT
+
+# Rules for the zabbix agent and server were also added
 ```
 
 ![router iptables](/machines/new-pics/router%20iptables.PNG)

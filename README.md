@@ -12,6 +12,12 @@ using agent-based checks.
 
 ![lab topology](/machines/new-pics/lab-topology.drawio.png)
 
+## Zabbix UI 
+- 4 VMs connected and active
+
+![zabbix dashboard](/machines/new-pics/zabbix-ui.PNG)
+
+
 ## Topology
 - Router VM (NAT + DHCP + Internal)
 - Server VM (Internal) la

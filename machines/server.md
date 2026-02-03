@@ -1,26 +1,19 @@
 # Server VM
 
 ## Purpose
-Acts as server for outbound devices to communicate with internal server. 
+Act as web server. 
 
 ## Resources
 - RAM: 1 GB
 - CPU: 1 vCPU
 - Network Adapters:
-  - Adapter 1: Internal Network (lab_net)
+  - Adapter 1: Internal Network (intnet-server)
 
 ## Configuration
 ### IP Address
 - NAT interface: enp0s3
-- IP: 10.0.0.20/24
-- Default Gateway: 10.0.0.1
-
-```bash
-sudo ip addr add 10.0.0.20/24 dev enp0s3
-sudo ip route add default via 10.0.0.1
-```
-
-![server ip a ip route command](/machines/pics/server.PNG)
+- IP: 192.168.2.20/24
+- Default Gateway: 192.168.2.1
 
 ### DNS
 via /etc/resolv.conf file
