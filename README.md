@@ -20,8 +20,9 @@ using agent-based checks.
 
 ## Topology
 - Router VM (NAT + DHCP + Internal)
-- Server VM (Internal) la
-- Client VM (Internal) lab_net
+- Server VM (Internal) intnet-server
+- Client VM (Internal) intnet-client
+- Zabbix VM (Internal) intnet-zabbix
 
 # IP Addressing Scheme 
 
